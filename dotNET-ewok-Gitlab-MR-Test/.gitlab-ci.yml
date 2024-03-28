@@ -9,6 +9,7 @@ image: mcr.microsoft.com/dotnet/sdk:latest
 stages:
   - build
   - endorScan
+  - parseFindings
 
 build_job:
   stage: build
@@ -36,3 +37,19 @@ endorScan_job:
     # TODO: title output file with commit ID env variable
     - endorctl scan -o json > endor_scan_for_${CI_MERGE_REQUEST_IID}.json
 
+  artifacts:
+    paths:
+    - endor_scan_for_${CI_MERGE_REQUEST_IID}.json
+
+
+gitlab_mr_comment:
+  stage: parseFindings
+  
+  script:
+    - python gitlab_mr_creator.py
+
+  dependencies:
+    - endorScan_job
+
+  only:
+    - merge_requests
