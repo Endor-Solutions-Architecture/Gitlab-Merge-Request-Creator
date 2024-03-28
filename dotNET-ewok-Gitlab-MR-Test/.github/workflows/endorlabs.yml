@@ -1,0 +1,39 @@
+name: Endor Labs Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  endor_scan:
+    permissions:
+      security-events: write
+      contents: read
+      id-token: write
+      pull-requests: write
+      issues: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    
+    - name: Run endorctl
+      uses: endorlabs/github-action@v1.1.2
+      with:
+        namespace: "matt-demo-2"
+        api: "https://api.endorlabs.com"
+        enable_github_action_token: "true"
+        pr: false
+        enable_pr_comments: true
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        tags: "actor=${{ github.actor }},run-id=${{ github.run_id }}"
+# Only include if uploading results to GHAS:
+#        sarif_file: endor-labs.sarif
+
+# Upload results to GHAS:
+#    - name: Upload SARIF to github
+#      uses: github/codeql-action/upload-sarif@v3
+#      with:
+#        sarif_file: endor-labs.sarif

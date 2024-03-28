@@ -1,0 +1,135 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/mattbrown/Desktop/Projects/Gitlab-Merge-Request-Creator/dotNET-ewok-Gitlab-MR-Test/dotNETGoofV2.Website/dotNETGoofV2.Website.csproj": {}
+  },
+  "projects": {
+    "/Users/mattbrown/Desktop/Projects/Gitlab-Merge-Request-Creator/dotNET-ewok-Gitlab-MR-Test/dotNETGoofV2.Website/dotNETGoofV2.Website.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/mattbrown/Desktop/Projects/Gitlab-Merge-Request-Creator/dotNET-ewok-Gitlab-MR-Test/dotNETGoofV2.Website/dotNETGoofV2.Website.csproj",
+        "projectName": "dotNETGoofV2.Website",
+        "projectPath": "/Users/mattbrown/Desktop/Projects/Gitlab-Merge-Request-Creator/dotNET-ewok-Gitlab-MR-Test/dotNETGoofV2.Website/dotNETGoofV2.Website.csproj",
+        "packagesPath": "/Users/mattbrown/.nuget/packages/",
+        "outputPath": "/Users/mattbrown/Desktop/Projects/Gitlab-Merge-Request-Creator/dotNET-ewok-Gitlab-MR-Test/dotNETGoofV2.Website/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/mattbrown/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "noWarn": [
+            "NU1701",
+            "NU1902",
+            "NU1904"
+          ],
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreLockProperties": {
+          "restorePackagesWithLockFile": "true"
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Blogifier.Core": {
+              "target": "Package",
+              "version": "[2.5.5, )"
+            },
+            "Confluent.Kafka": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "EJS": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "Halibut": {
+              "target": "Package",
+              "version": "[4.4.4, )"
+            },
+            "Microsoft.AspNet.SignalR": {
+              "target": "Package",
+              "version": "[2.4.2, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.69, )"
+            },
+            "ServiceStack": {
+              "target": "Package",
+              "version": "[5.9.0, )"
+            },
+            "Svg": {
+              "target": "Package",
+              "version": "[3.2.3, )"
+            },
+            "System.Text.Encodings.Web": {
+              "target": "Package",
+              "version": "[4.5.1, )"
+            },
+            "TinyMCE": {
+              "target": "Package",
+              "version": "[4.8.2, )"
+            },
+            "Wire": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "bootstrap": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "itext7": {
+              "target": "Package",
+              "version": "[7.1.14, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

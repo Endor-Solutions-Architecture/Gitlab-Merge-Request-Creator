@@ -1,0 +1,38 @@
+
+variables:
+    ENDOR_NAMESPACE: "matt-demo-2" # Insert your Endor Labs namespace here
+    ENDOR_API_CREDENTIALS_KEY: $ENDOR_API_KEY
+    ENDOR_API_CREDENTIALS_SECRET: $ENDOR_API_SECRET
+
+image: mcr.microsoft.com/dotnet/sdk:latest
+
+stages:
+  - build
+  - endorScan
+
+build_job:
+  stage: build
+  script:
+    - 'dotnet restore --packages $NUGET_PACKAGES_DIRECTORY --use-lock-file'  
+    - 'dotnet build --no-restore'
+
+endorScan_job:
+  stage: endorScan
+
+  before_script:
+
+    # Install jq to download endorctl
+    - curl -fsSL https://deb.nodesource.com/setup_current.x | bash
+    - apt-get install -y nodejs
+    - npm install -g endorctl
+    #- apt-get update && apt-get install -y jq
+    
+    # Download and scan with endorctl
+    #- echo "Downloading latest version of endorctl";
+    #- curl https://api.endorlabs.com/download/latest/endorctl_linux_amd64 -o endorctl
+    #- chmod +x ./endorctl
+  
+  script:
+    # TODO: title output file with commit ID env variable
+    - endorctl scan -o json > endor_scan_for_${CI_MERGE_REQUEST_IID}.json
+

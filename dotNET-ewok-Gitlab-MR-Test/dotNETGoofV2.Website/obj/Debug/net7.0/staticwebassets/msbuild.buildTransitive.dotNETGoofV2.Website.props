@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/dotNETGoofV2.Website.props" />
+</Project>

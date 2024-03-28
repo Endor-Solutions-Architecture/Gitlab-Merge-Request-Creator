@@ -1,0 +1,15 @@
+﻿@page
+@using dotNETGoofV2.Website.Components
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">dotNET Goof V2</h1>
+    <p>Vote for your <a href="https://snyk.io/">favorite Snyk feature!</a>.</p>
+</div>
+
+@(await Html.RenderComponentAsync<ProductList>(RenderMode.ServerPrerendered))
+
+<script src ="_framework/blazor.server.js"></script>
