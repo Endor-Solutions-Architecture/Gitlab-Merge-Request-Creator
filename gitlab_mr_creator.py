@@ -29,9 +29,8 @@ def extract_info(findings):
     cvss_score = findings.get('spec', {}).get('finding_metadata', {}).get('vulnerability', {}).get('spec', {}).get('cvss_v3_severity', {}).get('score')
     remediation = findings.get('spec', {}).get('remediation', '')
     summary = findings.get('spec', {}).get('summary', '')
-    errors = findings.get('errors', '')
 
-    return meta_desc, spec_desc, aliases, cvss_score, remediation, summary, errors
+    return meta_desc, spec_desc, aliases, cvss_score, remediation, summary
 
 def main():
     with open(findings_file_path, 'r') as file:
@@ -41,20 +40,18 @@ def main():
     if blocking_findings:
         for findings in blocking_findings:
             comment_body_parts = []  # Initialize inside the loop
-            meta_desc, spec_desc, aliases, cvss_score, remediation, summary, errors = extract_info(findings)
+            meta_desc, spec_desc, aliases, cvss_score, remediation, summary = extract_info(findings)
 
-            if errors:
-                comment_body_parts.append(f"**Policy Violation:** `{errors}`")
             if meta_desc:
-                comment_body_parts.append(f"**Meta Description:** {meta_desc}")
+                comment_body_parts.append(f"**Finding:** {meta_desc}")
             if spec_desc:
-                comment_body_parts.append(f"**Spec Description:** {spec_desc}")
+                comment_body_parts.append(f"**Description:** {spec_desc}")
             if aliases:
                 comment_body_parts.append(f"{', '.join(aliases)} ")
             if cvss_score is not None:  # Checking for `None` explicitly as `0` is a valid score but falsy
                 comment_body_parts.append(f"**CVSS Score:** {cvss_score}")
             if remediation:
-                comment_body_parts.append(f"**Remediation:** {remediation}")
+                comment_body_parts.append(f"**How Can I Fix It?:** {remediation}")
             if summary:
                 comment_body_parts.append(f"**Summary:** {summary}")
 
