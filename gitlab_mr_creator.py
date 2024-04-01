@@ -5,7 +5,9 @@ from os import getenv
 # Environment variables
 GITLAB_TOKEN = getenv('GITLAB_TOKEN')
 GITLAB_PROJECT_ID = getenv('CI_PROJECT_ID')
+#TODO: figure out MR_IID and where to get it from, perhapd substitute?
 MR_IID = getenv('CI_MERGE_REQUEST_IID')  # The merge request IID (internal ID)
+
 
 # File path to the findings JSON file
 findings_file_path = f'endor_scan_for_{MR_IID}.json'
@@ -41,14 +43,14 @@ def main():
     if blocking_findings:
         for findings in blocking_findings:
             meta_desc, spec_desc, aliases, cvss_score, remediation, summary, errors = extract_info(findings)
-            comment_title = f"Policy Violation: `{errors}`"
+            comment_title = f"Policy Violation: `{errors}`\n"
             comment_body = f"""
-**Meta Description:** {meta_desc}
-**Spec Description:** {spec_desc}
-**Aliases:** {', '.join(aliases)}
-**CVSS Score:** {cvss_score}
-**Remediation:** {remediation}
-**Summary:** {summary}
+**Meta Description:** {meta_desc}\n
+**Spec Description:** {spec_desc}\n
+**Aliases:** {', '.join(aliases)}\n
+**CVSS Score:** {cvss_score}\n
+**Remediation:** {remediation}\n
+**Summary:** {summary}\n
 """
             comment = comment_title + comment_body
             post_mr_comment(GITLAB_PROJECT_ID, MR_IID, comment)

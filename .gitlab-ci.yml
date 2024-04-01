@@ -1,10 +1,10 @@
-
 variables:
-    ENDOR_NAMESPACE: "matt-demo-2" # Insert your Endor Labs namespace here
-    ENDOR_API_CREDENTIALS_KEY: $ENDOR_API_KEY
-    ENDOR_API_CREDENTIALS_SECRET: $ENDOR_API_SECRET
+  ENDOR_NAMESPACE: "matt-demo-2" # Insert your Endor Labs namespace here
+  ENDOR_API_CREDENTIALS_KEY: $ENDOR_API_KEY
+  ENDOR_API_CREDENTIALS_SECRET: $ENDOR_API_SECRET
+  GITLAB_TOKEN: $GITLAB_TOKEN
 
-image: mcr.microsoft.com/dotnet/sdk:latest
+image: maven:3.8-openjdk-11
 
 stages:
   - build
@@ -14,43 +14,39 @@ stages:
 build_job:
   stage: build
   script:
-    - 'dotnet restore --use-lock-file'  
-    - 'dotnet build'
+    - mvn clean install
+  only:
+    - merge_requests
 
-endorScan_job:
+endorScan:
+
   stage: endorScan
-
+  
   before_script:
-
-    # Install jq to download endorctl
     - curl -fsSL https://deb.nodesource.com/setup_current.x | bash
     - apt-get install -y nodejs
     - npm install -g endorctl
   
   script:
     - endorctl scan --pr -o json > endor_scan_for_${CI_MERGE_REQUEST_IID}.json
-
   artifacts:
     paths:
-    - endor_scan_for_${CI_MERGE_REQUEST_IID}.json
+      - endor_scan_for_${CI_MERGE_REQUEST_IID}.json
     when: always
+  only:
+    - merge_requests
 
 gitlab_mr_comment:
   stage: parseFindings
-  
   before_script:
     - apt-get update && apt-get install -y python3 python3-pip python3-venv
-    # Create a virtual environment
     - python3 -m venv venv
-    # Activate the virtual environment
     - source venv/bin/activate
-    # Now you can safely use pip to install any package
     - pip install requests
-
+  needs:
+    - endorScan
   script:
     - python3 gitlab_mr_creator.py
-
+  when: always  # This job runs regardless of the success or failure of previous jobs
   only:
     - merge_requests
-  
-  when: always # This job runs regardless of the success or failure of previous jobs
