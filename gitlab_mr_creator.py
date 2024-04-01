@@ -43,7 +43,7 @@ def main():
             meta_desc, spec_desc, aliases, cvss_score, remediation, summary = extract_info(findings)
 
             if meta_desc:
-                comment_body_parts.append(f"**Finding:** {meta_desc}")
+                comment_body_parts.append(f"\n**Finding:** {meta_desc}")
             if spec_desc:
                 comment_body_parts.append(f"**Description:** {spec_desc}")
             if aliases:
