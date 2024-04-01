@@ -29,7 +29,7 @@ def extract_info(findings):
     cvss_score = findings.get('spec', {}).get('finding_metadata', {}).get('vulnerability', {}).get('spec', {}).get('cvss_v3_severity', {}).get('score')
     remediation = findings.get('spec', {}).get('remediation', '')
     summary = findings.get('spec', {}).get('summary', '')
-    errors = findings.get('all_findings', {})('errors', '')
+    errors = findings.get('errors', '')
 
     return meta_desc, spec_desc, aliases, cvss_score, remediation, summary, errors
 
