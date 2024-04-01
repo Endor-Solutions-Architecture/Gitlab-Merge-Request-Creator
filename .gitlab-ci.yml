@@ -2,9 +2,9 @@ variables:
   ENDOR_NAMESPACE: "matt-demo-2" # Insert your Endor Labs namespace here
   ENDOR_API_CREDENTIALS_KEY: $ENDOR_API_KEY
   ENDOR_API_CREDENTIALS_SECRET: $ENDOR_API_SECRET
-  GITLAB_TOKEN: $GITLAB_TOKEN
+  ENDOR_POLICY_CHECK: $ENDOR_POLICY_CHECK
 
-image: maven:3.8-openjdk-11
+image: # Choose your image
 
 stages:
   - build
@@ -14,7 +14,7 @@ stages:
 build_job:
   stage: build
   script:
-    - mvn clean install
+    # Build your project
   only:
     - merge_requests
 
@@ -50,3 +50,4 @@ gitlab_mr_comment:
   when: always  # This job runs regardless of the success or failure of previous jobs
   only:
     - merge_requests
+

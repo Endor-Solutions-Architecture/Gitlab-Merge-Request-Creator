@@ -3,11 +3,9 @@ import requests
 from os import getenv
 
 # Environment variables
-GITLAB_TOKEN = getenv('GITLAB_TOKEN')
+GITLAB_TOKEN = getenv('ENDOR_POLICY_CHECK')
 GITLAB_PROJECT_ID = getenv('CI_PROJECT_ID')
-#TODO: figure out MR_IID and where to get it from, perhapd substitute?
 MR_IID = getenv('CI_MERGE_REQUEST_IID')  # The merge request IID (internal ID)
-
 
 # File path to the findings JSON file
 findings_file_path = f'endor_scan_for_{MR_IID}.json'
@@ -24,14 +22,14 @@ def post_mr_comment(project_id, mr_iid, message):
         print(f"Failed to post comment. Status code: {response.status_code}")
 
 def extract_info(findings):
-    """Extract required information from findings."""
+    """Extract required information from findings, including CVE ID and CVSS Score."""
     meta_desc = findings.get('meta', {}).get('description', '')
-    spec_desc = findings.get('spec', {}).get('description', '')
-    aliases = findings.get('spec', {}).get('finding_metadata', {}).get('vulnerability', {}).get('aliases', [])
-    cvss_score = findings.get('spec', {}).get('finding_metadata', {}).get('vulnerability', {}).get('cvss_v3_severity', {}).get('score', '')
+    spec_desc = findings.get('spec', {}).get('explanation', '')
+    aliases = [f"**CVE or Known Vulnerability ID:** {alias}" for alias in findings.get('spec', {}).get('finding_metadata', {}).get('vulnerability', {}).get('spec', {}).get('aliases', [])]
+    cvss_score = findings.get('spec', {}).get('finding_metadata', {}).get('vulnerability', {}).get('spec', {}).get('cvss_v3_severity', {}).get('score')
     remediation = findings.get('spec', {}).get('remediation', '')
     summary = findings.get('spec', {}).get('summary', '')
-    errors = findings.get('errors', '')
+    errors = findings.get('all_findings', {})('errors', '')
 
     return meta_desc, spec_desc, aliases, cvss_score, remediation, summary, errors
 
@@ -42,18 +40,28 @@ def main():
     blocking_findings = data.get('blocking_findings', [])
     if blocking_findings:
         for findings in blocking_findings:
+            comment_body_parts = []  # Initialize inside the loop
             meta_desc, spec_desc, aliases, cvss_score, remediation, summary, errors = extract_info(findings)
-            comment_title = f"Policy Violation: `{errors}`\n"
-            comment_body = f"""
-**Meta Description:** {meta_desc}\n
-**Spec Description:** {spec_desc}\n
-**Aliases:** {', '.join(aliases)}\n
-**CVSS Score:** {cvss_score}\n
-**Remediation:** {remediation}\n
-**Summary:** {summary}\n
-"""
-            comment = comment_title + comment_body
-            post_mr_comment(GITLAB_PROJECT_ID, MR_IID, comment)
+
+            if errors:
+                comment_body_parts.append(f"**Policy Violation:** `{errors}`")
+            if meta_desc:
+                comment_body_parts.append(f"**Meta Description:** {meta_desc}")
+            if spec_desc:
+                comment_body_parts.append(f"**Spec Description:** {spec_desc}")
+            if aliases:
+                comment_body_parts.append(f"{', '.join(aliases)} ")
+            if cvss_score is not None:  # Checking for `None` explicitly as `0` is a valid score but falsy
+                comment_body_parts.append(f"**CVSS Score:** {cvss_score}")
+            if remediation:
+                comment_body_parts.append(f"**Remediation:** {remediation}")
+            if summary:
+                comment_body_parts.append(f"**Summary:** {summary}")
+
+            # Join only if there are parts to join
+            if comment_body_parts:
+                comment_body = "\n\n".join(comment_body_parts)
+                post_mr_comment(GITLAB_PROJECT_ID, MR_IID, comment_body)
 
 if __name__ == '__main__':
     main()
