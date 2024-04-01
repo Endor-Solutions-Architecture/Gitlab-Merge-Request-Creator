@@ -5,7 +5,6 @@ from os import getenv
 # Environment variables
 GITLAB_TOKEN = getenv('GITLAB_TOKEN')
 GITLAB_PROJECT_ID = getenv('CI_PROJECT_ID')
-#TODO: figure out MR_IID and where to get it from, perhapd substitute?
 MR_IID = getenv('CI_MERGE_REQUEST_IID')  # The merge request IID (internal ID)
 
 # File path to the findings JSON file
