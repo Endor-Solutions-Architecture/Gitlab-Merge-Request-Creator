@@ -1,5 +1,5 @@
 variables:
-  ENDOR_NAMESPACE: "matt-demo-2" # Insert your Endor Labs namespace here
+  ENDOR_NAMESPACE: "your-namespace" # Insert your Endor Labs namespace here
   ENDOR_API_CREDENTIALS_KEY: $ENDOR_API_KEY
   ENDOR_API_CREDENTIALS_SECRET: $ENDOR_API_SECRET
   ENDOR_POLICY_CHECK: $ENDOR_POLICY_CHECK
