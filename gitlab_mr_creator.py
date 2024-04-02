@@ -3,7 +3,7 @@ import requests
 from os import getenv
 
 # env variables
-GITLAB_TOKEN = getenv('ENDOR_POLICY_CHECK') # name PAT something endor-y to recognize it, it's a user
+GITLAB_TOKEN = 'glpat-32DKcoY7kAxY59sFnknv' # name PAT something endor-y to recognize it, it's a user
 GITLAB_PROJECT_ID = getenv('CI_PROJECT_ID')
 MR_IID = getenv('CI_MERGE_REQUEST_IID')  # merge request IID (internal ID)
 
