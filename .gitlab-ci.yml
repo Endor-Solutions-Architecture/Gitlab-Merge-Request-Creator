@@ -51,3 +51,4 @@ gitlab_mr_comment:
   only:
     - merge_requests
 
+
