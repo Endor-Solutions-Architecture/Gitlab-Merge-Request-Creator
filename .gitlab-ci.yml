@@ -50,5 +50,3 @@ gitlab_mr_comment:
   when: always  # This job runs regardless of the success or failure of previous jobs
   only:
     - merge_requests
-
-
